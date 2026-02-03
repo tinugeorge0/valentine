@@ -52,6 +52,7 @@
       border-radius: 999px;
       border: none;
       cursor: pointer;
+      transition: transform 0.25s ease;
     }
 
     #yes {
@@ -62,7 +63,6 @@
     #no {
       background: #eee;
       color: #555;
-      position: relative;
     }
 
     #message {
@@ -77,7 +77,7 @@
       position: absolute;
       bottom: -20px;
       font-size: 20px;
-      animation: floatUp 6s linear infinite;
+      animation: floatUp linear infinite;
       opacity: 0.8;
     }
 
@@ -100,9 +100,8 @@
       position: absolute;
       width: 8px;
       height: 12px;
-      background: red;
       top: -10px;
-      animation: fall 2.5s linear forwards;
+      animation: fall linear forwards;
     }
 
     @keyframes fall {
@@ -110,6 +109,15 @@
         transform: translateY(110vh) rotate(720deg);
         opacity: 0;
       }
+    }
+
+    /* Wiggle */
+    @keyframes wiggle {
+      0% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(-5deg) scale(1); }
+      50% { transform: rotate(5deg) scale(1); }
+      75% { transform: rotate(-5deg) scale(1); }
+      100% { transform: rotate(0deg) scale(1); }
     }
   </style>
 </head>
@@ -121,22 +129,45 @@
 
     <div class="buttons">
       <button id="yes" onclick="yesClick()">Yes 💖</button>
-      <button id="no" ontouchstart="moveNo()" onmouseover="moveNo()">No 🙃</button>
+      <button id="no" onclick="noClick()">No 🙃</button>
     </div>
 
     <div id="message"></div>
   </div>
 
   <script>
-    // Move "No" button
-    function moveNo() {
+    let noCount = 0;
+    const noTexts = [
+      "No 🙃",
+      "Are you sure? 🥺",
+      "Really sure? 😢",
+      "That hurts 💔",
+      "Okay… wow 😭"
+    ];
+
+    function noClick() {
       const noBtn = document.getElementById("no");
-      const x = Math.random() * 100 - 50;
-      const y = Math.random() * 80 - 40;
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      noCount++;
+
+      // Change text
+      if (noCount < noTexts.length) {
+        noBtn.innerText = noTexts[noCount];
+      }
+
+      // Shrink button
+      const scale = Math.max(0.4, 1 - noCount * 0.15);
+      noBtn.style.transform = `scale(${scale})`;
+
+      // Wiggle
+      noBtn.style.animation = "wiggle 0.3s";
+      setTimeout(() => noBtn.style.animation = "", 300);
+
+      // Remove after enough taps
+      if (noCount >= 4) {
+        noBtn.style.display = "none";
+      }
     }
 
-    // Yes click
     function yesClick() {
       document.getElementById("message").innerText =
         "YAY!! 💕 I can’t wait 😍";
@@ -155,7 +186,7 @@
       setTimeout(() => heart.remove(), 7000);
     }, 400);
 
-    // Confetti function
+    // Confetti
     function launchConfetti() {
       for (let i = 0; i < 80; i++) {
         const confetti = document.createElement("div");
