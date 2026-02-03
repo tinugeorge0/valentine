@@ -13,6 +13,7 @@
     body {
       margin: 0;
       height: 100vh;
+      overflow: hidden;
       background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       display: flex;
       align-items: center;
@@ -25,5 +26,150 @@
       width: 90%;
       max-width: 360px;
       padding: 30px 20px;
-      border-radius: 24px;
+      border-radius: 26px;
       text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #ff4d6d;
+      font-size: 1.7rem;
+      margin-bottom: 25px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #no {
+      background: #eee;
+      color: #555;
+      position: relative;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #ff4d6d;
+      font-weight: 600;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      background: red;
+      top: -10px;
+      animation: fall 2.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Alex, will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+      <button id="yes" onclick="yesClick()">Yes 💖</button>
+      <button id="no" ontouchstart="moveNo()" onmouseover="moveNo()">No 🙃</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    // Move "No" button
+    function moveNo() {
+      const noBtn = document.getElementById("no");
+      const x = Math.random() * 100 - 50;
+      const y = Math.random() * 80 - 40;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // Yes click
+    function yesClick() {
+      document.getElementById("message").innerText =
+        "YAY!! 💕 I can’t wait 😍";
+      launchConfetti();
+    }
+
+    // Floating hearts
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 7000);
+    }, 400);
+
+    // Confetti function
+    function launchConfetti() {
+      for (let i = 0; i < 80; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.background =
+          ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2"][Math.floor(Math.random() * 4)];
+        confetti.style.animationDuration = 2 + Math.random() * 1.5 + "s";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 3000);
+      }
+    }
+  </script>
+
+</body>
+</html>
