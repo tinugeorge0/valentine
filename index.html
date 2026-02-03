@@ -12,88 +12,68 @@
       margin: 0;
       height: 100vh;
       overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-      /* Background gradient */
       background: radial-gradient(circle at top left, #ffd1dc 0%, #ff7aa6 45%, #f06 100%);
     }
 
-    /* Soft animated hearts background */
-    .bg-hearts {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+    /* Full screen card wrapper */
+    .screen-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
       overflow: hidden;
-      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 16px;
     }
 
-    .bg-heart {
-      position: absolute;
-      font-size: 20px;
-      opacity: 0.12;
-      animation: bgFloat linear infinite;
+    /* Decorative top area */
+    .top-decor {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
     }
 
-    @keyframes bgFloat {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(-120vh) scale(1.4); }
+    .top-heart {
+      font-size: 22px;
+      opacity: 0.8;
+      animation: floatUp 6s linear infinite;
     }
 
-    /* Sparkles */
-    .sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      opacity: 0;
-      animation: sparkle 2s infinite;
-      filter: blur(0.2px);
-    }
-
-    @keyframes sparkle {
-      0% { opacity: 0; transform: scale(0.4); }
-      50% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.6); }
-    }
-
-    .card {
-      width: 90%;
-      max-width: 360px;
-      padding: 30px 20px;
+    /* Middle card section */
+    .center-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 26px 22px;
+      background: rgba(255,255,255,0.92);
+      border: 4px solid #ff4d6d;
+      border-radius: 30px;
       text-align: center;
       position: relative;
-      z-index: 2;
-
-      border: 4px solid #ff4d6d;
-      border-radius: 26px;
-      background: rgba(255,255,255,0.9);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-
-      animation: floatBorder 3s ease-in-out infinite;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
     }
 
-    @keyframes floatBorder {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* SQUARE screenshot wrapper */
-    #screenshotWrap {
-      width: 360px;
-      height: 360px;
-      display: none; /* hidden on screen */
-      background: white;
-      border: 4px solid #ff4d6d;
+    .center-card::before {
+      content: "";
+      position: absolute;
+      inset: -12px;
+      border-radius: 34px;
+      border: 2px dashed rgba(255, 77, 109, 0.45);
+      pointer-events: none;
     }
 
     h1 {
       color: #ff4d6d;
-      font-size: 1.7rem;
-      margin-bottom: 25px;
+      font-size: 1.8rem;
+      margin: 0 0 22px 0;
     }
 
     .buttons {
@@ -123,52 +103,85 @@
     }
 
     #message {
-      margin-top: 20px;
+      margin-top: 18px;
       font-size: 1.2rem;
       color: #ff4d6d;
       font-weight: 600;
     }
 
-    /* Floating hearts */
-    .heart {
-      position: absolute;
-      bottom: -20px;
-      font-size: 20px;
-      animation: floatUp linear infinite;
+    /* Bottom decor */
+    .bottom-decor {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding-bottom: 8px;
+    }
+
+    .bottom-heart {
+      font-size: 22px;
       opacity: 0.8;
+      animation: floatUp 5s linear infinite;
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 0; }
-      10% { opacity: 1; }
-      100% { transform: translateY(-110vh); opacity: 0; }
+      0% { transform: translateY(0); opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
     }
 
-    /* Confetti */
-    .confetti {
+    /* Background hearts + sparkles */
+    .bg-hearts, .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bg-heart {
       position: absolute;
-      width: 8px;
-      height: 12px;
-      top: -10px;
-      animation: fall linear forwards;
+      font-size: 20px;
+      opacity: 0.12;
+      animation: bgFloat linear infinite;
     }
 
-    @keyframes fall {
-      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    @keyframes bgFloat {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-120vh) scale(1.4); }
     }
 
-    /* Final screen (STARTS HIDDEN) */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle 2s infinite;
+      filter: blur(0.2px);
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.6); }
+    }
+
+    /* Final screen */
     .final {
       display: none;
-      font-size: 1.3rem;
-      color: #ff4d6d;
-      font-weight: 700;
-      padding: 30px 20px;
+      width: 100%;
+      max-width: 420px;
+      height: 100%;
+      position: relative;
+      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 14px;
-      position: relative;
+      padding: 24px;
+      text-align: center;
     }
 
     .save-btn {
@@ -183,54 +196,83 @@
       max-width: 240px;
     }
 
-    /* hidden while screenshot */
-    .hide-for-screenshot {
-      display: block;
-    }
-
-    /* watermark */
     .watermark {
       position: absolute;
-      bottom: 8px;
-      right: 10px;
+      bottom: 12px;
+      right: 12px;
       font-size: 10px;
       color: rgba(0,0,0,0.35);
       user-select: none;
     }
+
+    .hide-for-screenshot {
+      display: block;
+    }
+
+    /* Square screenshot wrapper */
+    #screenshotWrap {
+      width: 360px;
+      height: 360px;
+      display: none;
+      background: white;
+      border: 4px solid #ff4d6d;
+      position: fixed;
+      left: -9999px;
+      top: -9999px;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <!-- Soft hearts background -->
+  <!-- Background hearts -->
   <div class="bg-hearts" id="bgHearts"></div>
+  <div class="sparkles" id="sparkles"></div>
 
-  <!-- Sparkles -->
-  <div class="bg-hearts" id="sparkles"></div>
+  <!-- Full screen card -->
+  <div class="screen-card" id="screenCard">
 
-  <div class="card" id="mainCard">
-    <h1 id="title">Alex, will you be my Valentine? 💘</h1>
-
-    <div class="buttons">
-      <button id="yes" onclick="yesClick()">Yes 💖</button>
-      <button id="no" onclick="noClick()">No 🙃</button>
+    <!-- Top decor -->
+    <div class="top-decor">
+      <div class="top-heart">💖</div>
+      <div class="top-heart">💗</div>
+      <div class="top-heart">💞</div>
     </div>
 
-    <div id="message"></div>
+    <!-- Center content -->
+    <div class="center-card" id="mainCard">
+      <h1 id="title">Alex, will you be my Valentine? 💘</h1>
+
+      <div class="buttons">
+        <button id="yes" onclick="yesClick()">Yes 💖</button>
+        <button id="no" onclick="noClick()">No 🙃</button>
+      </div>
+
+      <div id="message"></div>
+    </div>
+
+    <!-- Bottom decor -->
+    <div class="bottom-decor">
+      <div class="bottom-heart">💗</div>
+      <div class="bottom-heart">💘</div>
+      <div class="bottom-heart">💞</div>
+    </div>
+
   </div>
 
-  <div class="card final" id="finalCard">
+  <!-- Final screen -->
+  <div class="final" id="finalCard">
     <div style="font-size: 2.2rem;">💞</div>
     <div style="margin-top: 15px;" id="finalText">Screenshot this 😘</div>
     <div class="hide-for-screenshot" style="font-size: 0.9rem; color: #777;">
       (Tap below to save as image)
     </div>
     <button class="save-btn hide-for-screenshot" onclick="saveScreenshot()">Save as Image</button>
-
     <div class="watermark">Made with ❤️</div>
   </div>
 
-  <!-- SQUARE screenshot wrapper -->
+  <!-- Square screenshot wrapper -->
   <div id="screenshotWrap">
     <div style="font-size: 2.2rem; margin-top: 20px;">💞</div>
     <div style="margin-top: 15px; font-size: 1.3rem; color:#ff4d6d; font-weight:700;">
@@ -294,7 +336,7 @@
       launchConfetti();
 
       setTimeout(() => {
-        document.getElementById("mainCard").style.display = "none";
+        document.getElementById("screenCard").style.display = "none";
         document.getElementById("finalCard").style.display = "flex";
       }, 1200);
     }
@@ -347,7 +389,6 @@
     }
 
     function saveScreenshot() {
-      const finalCard = document.getElementById("finalCard");
       const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
       const wrap = document.getElementById("screenshotWrap");
 
