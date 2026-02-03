@@ -68,19 +68,26 @@
       position: relative;
       z-index: 2;
 
-      /* Heart border */
       border: 4px solid #ff4d6d;
       border-radius: 26px;
       background: rgba(255,255,255,0.9);
       box-shadow: 0 15px 40px rgba(0,0,0,0.15);
 
-      /* animated floating border */
       animation: floatBorder 3s ease-in-out infinite;
     }
 
     @keyframes floatBorder {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
+    }
+
+    /* SQUARE screenshot wrapper */
+    #screenshotWrap {
+      width: 360px;
+      height: 360px;
+      display: none; /* hidden on screen */
+      background: white;
+      border: 4px solid #ff4d6d;
     }
 
     h1 {
@@ -148,15 +155,6 @@
 
     @keyframes fall {
       to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-    }
-
-    /* Wiggle */
-    @keyframes wiggle {
-      0% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-5deg) scale(1); }
-      50% { transform: rotate(5deg) scale(1); }
-      75% { transform: rotate(-5deg) scale(1); }
-      100% { transform: rotate(0deg) scale(1); }
     }
 
     /* Final screen (STARTS HIDDEN) */
@@ -232,6 +230,17 @@
     <div class="watermark">Made with ❤️</div>
   </div>
 
+  <!-- SQUARE screenshot wrapper -->
+  <div id="screenshotWrap">
+    <div style="font-size: 2.2rem; margin-top: 20px;">💞</div>
+    <div style="margin-top: 15px; font-size: 1.3rem; color:#ff4d6d; font-weight:700;">
+      Screenshot this 😘
+    </div>
+    <div style="position:absolute; bottom: 15px; right: 15px; font-size: 10px; color: rgba(0,0,0,0.35);">
+      Made with ❤️
+    </div>
+  </div>
+
   <!-- Soft music -->
   <audio id="music" loop>
     <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9a3b2f0a7c.mp3?filename=soft-love-ambient-11006.mp3" type="audio/mpeg">
@@ -243,11 +252,9 @@
   <script>
     const recipientName = "Alex";
     const finalMessage = "Screenshot this 😘";
-    const watermarkText = "Made with ❤️";
 
     document.getElementById("title").innerText = `${recipientName}, will you be my Valentine? 💘`;
     document.getElementById("finalText").innerText = finalMessage;
-    document.querySelector(".watermark").innerText = watermarkText;
 
     let noCount = 0;
     const noTexts = [
@@ -342,16 +349,19 @@
     function saveScreenshot() {
       const finalCard = document.getElementById("finalCard");
       const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
+      const wrap = document.getElementById("screenshotWrap");
 
       hiddenItems.forEach(el => el.style.display = "none");
+      wrap.style.display = "block";
 
-      html2canvas(finalCard).then(canvas => {
+      html2canvas(wrap).then(canvas => {
         const link = document.createElement("a");
         link.download = "valentine.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
 
         hiddenItems.forEach(el => el.style.display = "block");
+        wrap.style.display = "none";
       });
     }
   </script>
