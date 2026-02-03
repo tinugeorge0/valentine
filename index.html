@@ -126,6 +126,11 @@
       font-size: 1.05rem;
       cursor: pointer;
     }
+
+    /* hidden while screenshot */
+    .hide-for-screenshot {
+      display: block;
+    }
   </style>
 </head>
 
@@ -145,10 +150,10 @@
   <div class="card final" id="finalCard">
     <div style="font-size: 2.2rem;">💞</div>
     <div style="margin-top: 15px;">Screenshot this 😘</div>
-    <div style="margin-top: 10px; font-size: 0.9rem; color: #777;">
+    <div class="hide-for-screenshot" style="margin-top: 10px; font-size: 0.9rem; color: #777;">
       (Tap below to save as image)
     </div>
-    <button class="save-btn" onclick="saveScreenshot()">Save as Image</button>
+    <button class="save-btn hide-for-screenshot" onclick="saveScreenshot()">Save as Image</button>
   </div>
 
   <!-- Soft music -->
@@ -231,12 +236,19 @@
     // Save screenshot as image
     function saveScreenshot() {
       const finalCard = document.getElementById("finalCard");
+      const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
+
+      // Hide elements
+      hiddenItems.forEach(el => el.style.display = "none");
 
       html2canvas(finalCard).then(canvas => {
         const link = document.createElement("a");
         link.download = "valentine.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
+
+        // Restore elements
+        hiddenItems.forEach(el => el.style.display = "block");
       });
     }
   </script>
