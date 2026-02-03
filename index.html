@@ -8,82 +8,92 @@
   <style>
     * { box-sizing: border-box; }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      overflow: hidden; /* prevents scrolling */
-    }
-
     body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+      /* Background gradient */
       background: radial-gradient(circle at top left, #ffd1dc 0%, #ff7aa6 45%, #f06 100%);
     }
 
-    /* Full screen card wrapper */
-    .screen-card {
-      width: 100%;
-      height: 100%;
-      position: relative;
+    /* Soft animated hearts background */
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 16px;
-      z-index: 2;
+      z-index: 0;
     }
 
-    .top-decor, .bottom-decor {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 10px;
+    .bg-heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.12;
+      animation: bgFloat linear infinite;
     }
 
-    .top-heart, .bottom-heart {
-      font-size: 22px;
-      opacity: 0.8;
-      animation: floatUp 6s linear infinite;
+    @keyframes bgFloat {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-120vh) scale(1.4); }
     }
 
-    @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 0.5; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-50px); opacity: 0; }
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle 2s infinite;
+      filter: blur(0.2px);
     }
 
-    /* Center card */
-    .center-card {
-      width: 100%;
-      max-width: 420px;
-      padding: 26px 22px;
-      background: rgba(255,255,255,0.92);
-      border: 4px solid #ff4d6d;
-      border-radius: 30px;
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.6); }
+    }
+
+    .card {
+      width: 90%;
+      max-width: 360px;
+      padding: 30px 20px;
       text-align: center;
       position: relative;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+      z-index: 2;
+
+      border: 4px solid #ff4d6d;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+
+      animation: floatBorder 3s ease-in-out infinite;
     }
 
-    .center-card::before {
-      content: "";
-      position: absolute;
-      inset: -12px;
-      border-radius: 34px;
-      border: 2px dashed rgba(255, 77, 109, 0.45);
-      pointer-events: none;
+    @keyframes floatBorder {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* SQUARE screenshot wrapper */
+    #screenshotWrap {
+      width: 360px;
+      height: 360px;
+      display: none; /* hidden on screen */
+      background: white;
+      border: 4px solid #ff4d6d;
     }
 
     h1 {
       color: #ff4d6d;
-      font-size: 1.8rem;
-      margin: 0 0 22px 0;
+      font-size: 1.7rem;
+      margin-bottom: 25px;
     }
 
     .buttons {
@@ -113,65 +123,52 @@
     }
 
     #message {
-      margin-top: 18px;
+      margin-top: 20px;
       font-size: 1.2rem;
       color: #ff4d6d;
       font-weight: 600;
     }
 
-    /* Background hearts + sparkles */
-    .bg-hearts, .sparkles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 0;
-    }
-
-    .bg-heart {
+    /* Floating hearts */
+    .heart {
       position: absolute;
+      bottom: -20px;
       font-size: 20px;
-      opacity: 0.12;
-      animation: bgFloat linear infinite;
+      animation: floatUp linear infinite;
+      opacity: 0.8;
     }
 
-    @keyframes bgFloat {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(-120vh) scale(1.4); }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
     }
 
-    .sparkle {
+    /* Confetti */
+    .confetti {
       position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      opacity: 0;
-      animation: sparkle 2s infinite;
-      filter: blur(0.2px);
+      width: 8px;
+      height: 12px;
+      top: -10px;
+      animation: fall linear forwards;
     }
 
-    @keyframes sparkle {
-      0% { opacity: 0; transform: scale(0.4); }
-      50% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.6); }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
     }
 
-    /* Final screen */
+    /* Final screen (STARTS HIDDEN) */
     .final {
       display: none;
-      width: 100%;
-      max-width: 420px;
-      height: 100%;
-      position: relative;
-      display: flex;
+      font-size: 1.3rem;
+      color: #ff4d6d;
+      font-weight: 700;
+      padding: 30px 20px;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 14px;
-      padding: 24px;
-      text-align: center;
-      z-index: 2;
+      position: relative;
     }
 
     .save-btn {
@@ -186,81 +183,54 @@
       max-width: 240px;
     }
 
-    .watermark {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      font-size: 10px;
-      color: rgba(0,0,0,0.35);
-      user-select: none;
-    }
-
+    /* hidden while screenshot */
     .hide-for-screenshot {
       display: block;
     }
 
-    /* Square screenshot wrapper (hidden without affecting layout) */
-    #screenshotWrap {
-      width: 360px;
-      height: 360px;
-      display: none;
-      background: white;
-      border: 4px solid #ff4d6d;
-      position: fixed;
-      left: -9999px;
-      top: -9999px;
-      z-index: -1;
+    /* watermark */
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10px;
+      color: rgba(0,0,0,0.35);
+      user-select: none;
     }
-
   </style>
 </head>
 
 <body>
 
-  <!-- Background hearts -->
+  <!-- Soft hearts background -->
   <div class="bg-hearts" id="bgHearts"></div>
-  <div class="sparkles" id="sparkles"></div>
 
-  <!-- Full screen card -->
-  <div class="screen-card" id="screenCard">
+  <!-- Sparkles -->
+  <div class="bg-hearts" id="sparkles"></div>
 
-    <div class="top-decor">
-      <div class="top-heart">💖</div>
-      <div class="top-heart">💗</div>
-      <div class="top-heart">💞</div>
+  <div class="card" id="mainCard">
+    <h1 id="title">Alex, will you be my Valentine? 💘</h1>
+
+    <div class="buttons">
+      <button id="yes" onclick="yesClick()">Yes 💖</button>
+      <button id="no" onclick="noClick()">No 🙃</button>
     </div>
 
-    <div class="center-card" id="mainCard">
-      <h1 id="title">Alex, will you be my Valentine? 💘</h1>
-
-      <div class="buttons">
-        <button id="yes" onclick="yesClick()">Yes 💖</button>
-        <button id="no" onclick="noClick()">No 🙃</button>
-      </div>
-
-      <div id="message"></div>
-    </div>
-
-    <div class="bottom-decor">
-      <div class="bottom-heart">💗</div>
-      <div class="bottom-heart">💘</div>
-      <div class="bottom-heart">💞</div>
-    </div>
-
+    <div id="message"></div>
   </div>
 
-  <!-- Final screen -->
-  <div class="final" id="finalCard">
+  <div class="card final" id="finalCard">
     <div style="font-size: 2.2rem;">💞</div>
     <div style="margin-top: 15px;" id="finalText">Screenshot this 😘</div>
     <div class="hide-for-screenshot" style="font-size: 0.9rem; color: #777;">
       (Tap below to save as image)
     </div>
     <button class="save-btn hide-for-screenshot" onclick="saveScreenshot()">Save as Image</button>
+
     <div class="watermark">Made with ❤️</div>
   </div>
 
-  <!-- Square screenshot wrapper -->
+  <!-- SQUARE screenshot wrapper -->
   <div id="screenshotWrap">
     <div style="font-size: 2.2rem; margin-top: 20px;">💞</div>
     <div style="margin-top: 15px; font-size: 1.3rem; color:#ff4d6d; font-weight:700;">
@@ -324,7 +294,7 @@
       launchConfetti();
 
       setTimeout(() => {
-        document.getElementById("screenCard").style.display = "none";
+        document.getElementById("mainCard").style.display = "none";
         document.getElementById("finalCard").style.display = "flex";
       }, 1200);
     }
@@ -377,6 +347,7 @@
     }
 
     function saveScreenshot() {
+      const finalCard = document.getElementById("finalCard");
       const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
       const wrap = document.getElementById("screenshotWrap");
 
