@@ -6,9 +6,7 @@
   <title>Be My Valentine?</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -82,17 +80,9 @@
     }
 
     @keyframes floatUp {
-      0% {
-        transform: translateY(0);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-110vh);
-        opacity: 0;
-      }
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-110vh); opacity: 0; }
     }
 
     /* Confetti */
@@ -105,10 +95,7 @@
     }
 
     @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(720deg);
-        opacity: 0;
-      }
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
     }
 
     /* Wiggle */
@@ -119,12 +106,21 @@
       75% { transform: rotate(-5deg) scale(1); }
       100% { transform: rotate(0deg) scale(1); }
     }
+
+    /* Final screen */
+    .final {
+      display: none;
+      font-size: 1.3rem;
+      color: #ff4d6d;
+      font-weight: 700;
+      padding: 30px 20px;
+    }
   </style>
 </head>
 
 <body>
 
-  <div class="card">
+  <div class="card" id="mainCard">
     <h1>Alex, will you be my Valentine? 💘</h1>
 
     <div class="buttons">
@@ -134,6 +130,19 @@
 
     <div id="message"></div>
   </div>
+
+  <div class="card final" id="finalCard">
+    <div style="font-size: 2.2rem;">💞</div>
+    <div style="margin-top: 15px;">Screenshot this 😘</div>
+    <div style="margin-top: 10px; font-size: 0.9rem; color: #777;">
+      (Hold the power button + volume up to screenshot)
+    </div>
+  </div>
+
+  <!-- Soft music (autoplay is blocked on mobile, so we play after tap) -->
+  <audio id="music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9a3b2f0a7c.mp3?filename=soft-love-ambient-11006.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     let noCount = 0;
@@ -149,20 +158,16 @@
       const noBtn = document.getElementById("no");
       noCount++;
 
-      // Change text
       if (noCount < noTexts.length) {
         noBtn.innerText = noTexts[noCount];
       }
 
-      // Shrink button
       const scale = Math.max(0.4, 1 - noCount * 0.15);
       noBtn.style.transform = `scale(${scale})`;
 
-      // Wiggle
       noBtn.style.animation = "wiggle 0.3s";
       setTimeout(() => noBtn.style.animation = "", 300);
 
-      // Remove after enough taps
       if (noCount >= 4) {
         noBtn.style.display = "none";
       }
@@ -171,7 +176,19 @@
     function yesClick() {
       document.getElementById("message").innerText =
         "YAY!! 💕 I can’t wait 😍";
+
+      // Play music (allowed because user tapped)
+      const music = document.getElementById("music");
+      music.play().catch(() => {});
+
+      // Confetti
       launchConfetti();
+
+      // Final screen after 1.2 seconds
+      setTimeout(() => {
+        document.getElementById("mainCard").style.display = "none";
+        document.getElementById("finalCard").style.display = "block";
+      }, 1200);
     }
 
     // Floating hearts
@@ -182,7 +199,6 @@
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.animationDuration = 4 + Math.random() * 3 + "s";
       document.body.appendChild(heart);
-
       setTimeout(() => heart.remove(), 7000);
     }, 400);
 
@@ -196,7 +212,6 @@
           ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2"][Math.floor(Math.random() * 4)];
         confetti.style.animationDuration = 2 + Math.random() * 1.5 + "s";
         document.body.appendChild(confetti);
-
         setTimeout(() => confetti.remove(), 3000);
       }
     }
