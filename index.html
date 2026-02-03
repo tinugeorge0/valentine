@@ -17,35 +17,70 @@
       justify-content: center;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-      /* ✨ CUSTOM BACKGROUND */
+      /* Background gradient */
       background: radial-gradient(circle at top left, #ffd1dc 0%, #ff7aa6 45%, #f06 100%);
+    }
 
-      /* subtle heart pattern */
-      background-image:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 40%),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 45%),
-        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 40%);
+    /* Soft animated hearts background */
+    .bg-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .bg-heart {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.12;
+      animation: bgFloat linear infinite;
+    }
+
+    @keyframes bgFloat {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-120vh) scale(1.4); }
+    }
+
+    /* Sparkles */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle 2s infinite;
+      filter: blur(0.2px);
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.6); }
     }
 
     .card {
       width: 90%;
       max-width: 360px;
       padding: 30px 20px;
-      border-radius: 26px;
       text-align: center;
       position: relative;
       z-index: 2;
 
-      /* ✨ HEART BORDER */
+      /* Heart border */
       border: 4px solid #ff4d6d;
-      clip-path: path("M 50 15
-        C 35 -5, 0 15, 0 45
-        C 0 80, 50 110, 50 140
-        C 50 110, 100 80, 100 45
-        C 100 15, 65 -5, 50 15 Z");
-      transform: scale(1);
-      background: white;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.9);
       box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+
+      /* animated floating border */
+      animation: floatBorder 3s ease-in-out infinite;
+    }
+
+    @keyframes floatBorder {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
     h1 {
@@ -169,6 +204,12 @@
 
 <body>
 
+  <!-- Soft hearts background -->
+  <div class="bg-hearts" id="bgHearts"></div>
+
+  <!-- Sparkles -->
+  <div class="bg-hearts" id="sparkles"></div>
+
   <div class="card" id="mainCard">
     <h1 id="title">Alex, will you be my Valentine? 💘</h1>
 
@@ -251,6 +292,30 @@
       }, 1200);
     }
 
+    // Background hearts
+    const bgHearts = document.getElementById("bgHearts");
+    for (let i = 0; i < 18; i++) {
+      const heart = document.createElement("div");
+      heart.className = "bg-heart";
+      heart.innerText = "💗";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = Math.random() * 100 + "vh";
+      heart.style.animationDuration = 10 + Math.random() * 20 + "s";
+      bgHearts.appendChild(heart);
+    }
+
+    // Sparkles
+    const sparkles = document.getElementById("sparkles");
+    for (let i = 0; i < 50; i++) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = Math.random() * 100 + "vw";
+      sparkle.style.top = Math.random() * 100 + "vh";
+      sparkle.style.animationDelay = Math.random() * 2 + "s";
+      sparkles.appendChild(sparkle);
+    }
+
+    // Floating hearts (foreground)
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
