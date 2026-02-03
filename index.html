@@ -107,14 +107,13 @@
       100% { transform: rotate(0deg) scale(1); }
     }
 
-    /* Final screen */
+    /* Final screen (STARTS HIDDEN) */
     .final {
-      display: none;
+      display: none;          /* THIS MUST STAY */
       font-size: 1.3rem;
       color: #ff4d6d;
       font-weight: 700;
       padding: 30px 20px;
-      display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -197,12 +196,10 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
-    // 🌹 CUSTOM MESSAGE
     const recipientName = "Alex";
     const finalMessage = "Screenshot this 😘";
     const watermarkText = "Made with ❤️";
 
-    // Set custom name + message
     document.getElementById("title").innerText = `${recipientName}, will you be my Valentine? 💘`;
     document.getElementById("finalText").innerText = finalMessage;
     document.querySelector(".watermark").innerText = watermarkText;
@@ -250,7 +247,6 @@
       }, 1200);
     }
 
-    // Floating hearts
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -261,7 +257,6 @@
       setTimeout(() => heart.remove(), 7000);
     }, 400);
 
-    // Confetti
     function launchConfetti() {
       for (let i = 0; i < 80; i++) {
         const confetti = document.createElement("div");
@@ -275,12 +270,10 @@
       }
     }
 
-    // Save screenshot as image
     function saveScreenshot() {
       const finalCard = document.getElementById("finalCard");
       const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
 
-      // Hide elements
       hiddenItems.forEach(el => el.style.display = "none");
 
       html2canvas(finalCard).then(canvas => {
@@ -289,19 +282,15 @@
         link.href = canvas.toDataURL("image/png");
         link.click();
 
-        // Restore elements
         hiddenItems.forEach(el => el.style.display = "block");
       });
     }
 
-    // Share on WhatsApp
     function shareWhatsApp() {
       const url = window.location.href;
       const text = encodeURIComponent(
         `Hey ${recipientName}! 💘\n\nOpen this: ${url}`
       );
-
-      // Opens WhatsApp with message
       window.open(`https://wa.me/?text=${text}`, "_blank");
     }
   </script>
