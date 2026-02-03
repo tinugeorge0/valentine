@@ -114,13 +114,12 @@
       color: #ff4d6d;
       font-weight: 700;
       padding: 30px 20px;
-
-      /* center everything */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 14px;
+      position: relative;
     }
 
     .save-btn {
@@ -135,9 +134,31 @@
       max-width: 240px;
     }
 
+    .share-btn {
+      background: #25D366;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 1.05rem;
+      cursor: pointer;
+      width: 100%;
+      max-width: 240px;
+    }
+
     /* hidden while screenshot */
     .hide-for-screenshot {
       display: block;
+    }
+
+    /* watermark */
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 10px;
+      color: rgba(0,0,0,0.35);
+      user-select: none;
     }
   </style>
 </head>
@@ -145,7 +166,7 @@
 <body>
 
   <div class="card" id="mainCard">
-    <h1>Alex, will you be my Valentine? 💘</h1>
+    <h1 id="title">Alex, will you be my Valentine? 💘</h1>
 
     <div class="buttons">
       <button id="yes" onclick="yesClick()">Yes 💖</button>
@@ -157,11 +178,14 @@
 
   <div class="card final" id="finalCard">
     <div style="font-size: 2.2rem;">💞</div>
-    <div style="margin-top: 15px;">I LOVE YOU 😘</div>
+    <div style="margin-top: 15px;" id="finalText">Screenshot this 😘</div>
     <div class="hide-for-screenshot" style="font-size: 0.9rem; color: #777;">
       (Tap below to save as image)
     </div>
     <button class="save-btn hide-for-screenshot" onclick="saveScreenshot()">Save as Image</button>
+    <button class="share-btn hide-for-screenshot" onclick="shareWhatsApp()">Share on WhatsApp</button>
+
+    <div class="watermark">Made with ❤️</div>
   </div>
 
   <!-- Soft music -->
@@ -173,6 +197,16 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
+    // 🌹 CUSTOM MESSAGE
+    const recipientName = "Alex";
+    const finalMessage = "Screenshot this 😘";
+    const watermarkText = "Made with ❤️";
+
+    // Set custom name + message
+    document.getElementById("title").innerText = `${recipientName}, will you be my Valentine? 💘`;
+    document.getElementById("finalText").innerText = finalMessage;
+    document.querySelector(".watermark").innerText = watermarkText;
+
     let noCount = 0;
     const noTexts = [
       "No 🙃",
@@ -258,6 +292,17 @@
         // Restore elements
         hiddenItems.forEach(el => el.style.display = "block");
       });
+    }
+
+    // Share on WhatsApp
+    function shareWhatsApp() {
+      const url = window.location.href;
+      const text = encodeURIComponent(
+        `Hey ${recipientName}! 💘\n\nOpen this: ${url}`
+      );
+
+      // Opens WhatsApp with message
+      window.open(`https://wa.me/?text=${text}`, "_blank");
     }
   </script>
 </body>
