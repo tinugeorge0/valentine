@@ -47,7 +47,6 @@
       border-radius: 50%;
       opacity: 0;
       animation: sparkle 2s infinite;
-      filter: blur(0.2px);
     }
 
     @keyframes sparkle {
@@ -145,29 +144,13 @@
       font-size: 1.3rem;
       color: #ff4d6d;
       font-weight: 700;
-      padding: 30px 20px;
+      padding: 40px 20px;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 14px;
       position: relative;
       z-index: 2;
-    }
-
-    .save-btn {
-      background: #ff4d6d;
-      color: white;
-      padding: 12px 16px;
-      border-radius: 999px;
-      border: none;
-      font-size: 1.05rem;
-      cursor: pointer;
-      width: 100%;
-      max-width: 240px;
-    }
-
-    .hide-for-screenshot {
-      display: block;
     }
 
     .watermark {
@@ -178,53 +161,12 @@
       color: rgba(0,0,0,0.35);
       user-select: none;
     }
-
-    /* SCREENSHOT wrapper (includes background + hearts + sparkles) */
-    #screenshotWrap {
-      width: 360px;
-      height: 360px;
-      display: none;
-      position: fixed;
-      left: -9999px;
-      top: -9999px;
-      background: radial-gradient(circle at top left, #ffd1dc 0%, #ff7aa6 45%, #f06 100%);
-      border: 4px solid #ff4d6d;
-      overflow: hidden;
-    }
-
-    #screenshotWrap .bg-hearts,
-    #screenshotWrap .sparkles {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-    }
-
-    #screenshotWrap .bg-heart {
-      position: absolute;
-      font-size: 20px;
-      opacity: 0.12;
-      animation: bgFloat linear infinite;
-    }
-
-    #screenshotWrap .sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      opacity: 0;
-      animation: sparkle 2s infinite;
-      filter: blur(0.2px);
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- Soft hearts background -->
   <div class="bg-hearts" id="bgHearts"></div>
-
-  <!-- Sparkles -->
   <div class="bg-hearts" id="sparkles"></div>
 
   <div class="card" id="mainCard">
@@ -240,45 +182,18 @@
 
   <div class="card final" id="finalCard">
     <div style="font-size: 2.2rem;">💞</div>
-    <div style="margin-top: 15px;" id="finalText">Screenshot this 😘</div>
-    <div class="hide-for-screenshot" style="font-size: 0.9rem; color: #777;">
-      (Tap below to save as image)
-    </div>
-    <button class="save-btn hide-for-screenshot" onclick="saveScreenshot()">Save as Image</button>
-
+    <div>Happy Valentine’s Day 💕</div>
     <div class="watermark">Made with ❤️</div>
   </div>
 
-  <!-- SCREENSHOT wrapper -->
-  <div id="screenshotWrap">
-    <div class="bg-hearts" id="bgHearts2"></div>
-    <div class="sparkles" id="sparkles2"></div>
-
-    <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-      <div style="font-size: 2.2rem;">💞</div>
-      <div style="margin-top: 15px; font-size: 1.3rem; color:white; font-weight:700;">
-        Screenshot this 😘
-      </div>
-      <div style="position:absolute; bottom: 15px; right: 15px; font-size: 10px; color: rgba(0,0,0,0.35);">
-        Made with ❤️
-      </div>
-    </div>
-  </div>
-
-  <!-- Soft music -->
   <audio id="music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9a3b2f0a7c.mp3?filename=soft-love-ambient-11006.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9a3b2f0a7c.mp3" type="audio/mpeg">
   </audio>
-
-  <!-- html2canvas -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <script>
     const recipientName = "Alex";
-    const finalMessage = "Screenshot this 😘";
-
-    document.getElementById("title").innerText = `${recipientName}, will you be my Valentine? 💘`;
-    document.getElementById("finalText").innerText = finalMessage;
+    document.getElementById("title").innerText =
+      `${recipientName}, will you be my Valentine? 💘`;
 
     let noCount = 0;
     const noTexts = [
@@ -297,11 +212,7 @@
         noBtn.innerText = noTexts[noCount];
       }
 
-      const scale = Math.max(0.4, 1 - noCount * 0.15);
-      noBtn.style.transform = `scale(${scale})`;
-
-      noBtn.style.animation = "wiggle 0.3s";
-      setTimeout(() => noBtn.style.animation = "", 300);
+      noBtn.style.transform = `scale(${Math.max(0.4, 1 - noCount * 0.15)})`;
 
       if (noCount >= 4) {
         noBtn.style.display = "none";
@@ -312,9 +223,7 @@
       document.getElementById("message").innerText =
         "YAY!! 💕 I can’t wait 😍";
 
-      const music = document.getElementById("music");
-      music.play().catch(() => {});
-
+      document.getElementById("music").play().catch(() => {});
       launchConfetti();
 
       setTimeout(() => {
@@ -323,10 +232,7 @@
       }, 1200);
     }
 
-    // Background hearts
     const bgHearts = document.getElementById("bgHearts");
-    const bgHearts2 = document.getElementById("bgHearts2");
-
     for (let i = 0; i < 18; i++) {
       const heart = document.createElement("div");
       heart.className = "bg-heart";
@@ -335,32 +241,8 @@
       heart.style.top = Math.random() * 100 + "vh";
       heart.style.animationDuration = 10 + Math.random() * 20 + "s";
       bgHearts.appendChild(heart);
-
-      const heart2 = heart.cloneNode(true);
-      heart2.style.left = Math.random() * 100 + "px";
-      heart2.style.top = Math.random() * 100 + "px";
-      bgHearts2.appendChild(heart2);
     }
 
-    // Sparkles
-    const sparkles = document.getElementById("sparkles");
-    const sparkles2 = document.getElementById("sparkles2");
-
-    for (let i = 0; i < 50; i++) {
-      const sparkle = document.createElement("div");
-      sparkle.className = "sparkle";
-      sparkle.style.left = Math.random() * 100 + "vw";
-      sparkle.style.top = Math.random() * 100 + "vh";
-      sparkle.style.animationDelay = Math.random() * 2 + "s";
-      sparkles.appendChild(sparkle);
-
-      const sparkle2 = sparkle.cloneNode(true);
-      sparkle2.style.left = Math.random() * 100 + "px";
-      sparkle2.style.top = Math.random() * 100 + "px";
-      sparkles2.appendChild(sparkle2);
-    }
-
-    // Floating hearts (foreground)
     setInterval(() => {
       const heart = document.createElement("div");
       heart.className = "heart";
@@ -383,25 +265,6 @@
         setTimeout(() => confetti.remove(), 3000);
       }
     }
-
-    function saveScreenshot() {
-      const hiddenItems = document.querySelectorAll(".hide-for-screenshot");
-      const wrap = document.getElementById("screenshotWrap");
-
-      hiddenItems.forEach(el => el.style.display = "none");
-      wrap.style.display = "block";
-
-      html2canvas(wrap).then(canvas => {
-        const link = document.createElement("a");
-        link.download = "valentine.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-
-        hiddenItems.forEach(el => el.style.display = "block");
-        wrap.style.display = "none";
-      });
-    }
   </script>
 </body>
 </html>
-
