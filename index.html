@@ -19,7 +19,7 @@
       background: radial-gradient(circle at top left, #ffd1dc 0%, #ff7aa6 45%, #f06 100%);
     }
 
-    .bg-hearts, .sparkles {
+    .bg-hearts {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -37,26 +37,6 @@
     @keyframes bgFloat {
       0% { transform: translateY(0) scale(1); }
       100% { transform: translateY(-120vh) scale(1.4); }
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 50%;
-      opacity: 0;
-      animation: sparkle 2s infinite;
-    }
-
-    .milkmocha {
-  animation: floatBorder 3s ease-in-out infinite;
-}
-
-    @keyframes sparkle {
-      0% { opacity: 0; transform: scale(0.4); }
-      50% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(0.6); }
     }
 
     .card {
@@ -117,32 +97,6 @@
       font-weight: 600;
     }
 
-    .heart {
-      position: absolute;
-      bottom: -20px;
-      font-size: 20px;
-      animation: floatUp linear infinite;
-      opacity: 0.8;
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 0; }
-      10% { opacity: 1; }
-      100% { transform: translateY(-110vh); opacity: 0; }
-    }
-
-    .confetti {
-      position: absolute;
-      width: 8px;
-      height: 12px;
-      top: -10px;
-      animation: fall linear forwards;
-    }
-
-    @keyframes fall {
-      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-    }
-
     .final {
       display: none;
       font-size: 1.3rem;
@@ -152,9 +106,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       position: relative;
       z-index: 2;
+    }
+
+    .milkmocha {
+      width: 180px;
+      margin-top: 14px;
+      border-radius: 18px;
+      animation: floatBorder 3s ease-in-out infinite;
     }
 
     .watermark {
@@ -171,10 +132,9 @@
 <body>
 
   <div class="bg-hearts" id="bgHearts"></div>
-  <div class="bg-hearts" id="sparkles"></div>
 
   <div class="card" id="mainCard">
-    <h1 id="title">Amisha baby, will you be my Valentine? 💘</h1>
+    <h1 id="title">Alex, will you be my Valentine? 💘</h1>
 
     <div class="buttons">
       <button id="yes" onclick="yesClick()">Yes 💖</button>
@@ -184,26 +144,26 @@
     <div id="message"></div>
   </div>
 
- <div class="card final" id="finalCard">
-  <div style="font-size: 2.2rem;">💞</div>
-  <div>Happy Valentine’s Day 💕</div>
-  <div style="font-size: 1.1rem;">See you soon 💖</div>
-  <img
-  src="https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif"
-  class="milkmocha"
-  alt="Milk and Mocha Bears"
-  style="width: 180px; margin-top: 16px; border-radius: 18px;"
-/>
+  <div class="card final" id="finalCard">
+    <div style="font-size: 2.2rem;">💞</div>
+    <div>Happy Valentine’s Day 💕</div>
+    <div style="font-size: 1.1rem;">See you soon 💖</div>
 
-  <div class="watermark">Made with ❤️</div>
-</div>
+    <img
+      src="https://media.giphy.com/media/l0MYB8Ory7Hqefo9a/giphy.gif"
+      alt="Milk and Mocha Bears"
+      class="milkmocha"
+    />
+
+    <div class="watermark">Made with ❤️</div>
+  </div>
 
   <audio id="music" loop>
     <source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_9a3b2f0a7c.mp3" type="audio/mpeg">
   </audio>
 
   <script>
-    const recipientName = "Amisha baby";
+    const recipientName = "Alex";
     document.getElementById("title").innerText =
       `${recipientName}, will you be my Valentine? 💘`;
 
@@ -236,7 +196,6 @@
         "YAY!! 💕 I can’t wait 😍";
 
       document.getElementById("music").play().catch(() => {});
-      launchConfetti();
 
       setTimeout(() => {
         document.getElementById("mainCard").style.display = "none";
@@ -254,32 +213,7 @@
       heart.style.animationDuration = 10 + Math.random() * 20 + "s";
       bgHearts.appendChild(heart);
     }
-
-    setInterval(() => {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerText = "💖";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 4 + Math.random() * 3 + "s";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 7000);
-    }, 400);
-
-    function launchConfetti() {
-      for (let i = 0; i < 80; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = Math.random() * 100 + "vw";
-        confetti.style.background =
-          ["#ff4d6d", "#ffd166", "#06d6a0", "#118ab2"][Math.floor(Math.random() * 4)];
-        confetti.style.animationDuration = 2 + Math.random() * 1.5 + "s";
-        document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 3000);
-      }
-    }
   </script>
+
 </body>
 </html>
-
-
-
